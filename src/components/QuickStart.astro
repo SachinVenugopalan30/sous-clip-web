@@ -1,0 +1,153 @@
+---
+const githubUrl = "https://github.com/SachinVenugopalan30/sous-clip";
+---
+
+<section class="quickstart" id="quickstart">
+  <div class="container quickstart-grid">
+    <div class="quickstart-pitch">
+      <h2>Built for people who believe their data is theirs.</h2>
+      <p>
+        Sous Clip stores everything in a local SQLite file. No accounts, no
+        telemetry, no cloud dependency. Your recipes live on your hardware,
+        under your control.
+      </p>
+      <p>
+        Run it on a Raspberry Pi, a Synology NAS, or the old laptop in your
+        closet. If it runs Docker, it runs Sous Clip.
+      </p>
+    </div>
+
+    <div class="quickstart-code" data-reveal style="--reveal-i: 1">
+      <div class="code-header">
+        <span class="code-dot"></span>
+        <span class="code-dot"></span>
+        <span class="code-dot"></span>
+        <span class="code-title">terminal</span>
+      </div>
+      <pre><code><span class="comment"># Clone the repo</span>
+<span class="cmd">git clone</span> {githubUrl}.git
+<span class="cmd">cd</span> sous-clip
+
+<span class="comment"># Start with Docker</span>
+<span class="cmd">docker compose up -d</span></code></pre>
+      <div class="code-result">
+        <span class="arrow">&rarr;</span> Open <a href="http://localhost:3000" target="_blank">http://localhost:3000</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .quickstart {
+    padding: var(--section-pad) 0;
+    background: var(--surface);
+  }
+
+  .quickstart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .quickstart-pitch p {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .quickstart-code {
+    background: var(--dark-bg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow:
+      0 24px 80px rgba(0, 0, 0, 0.12),
+      0 4px 16px rgba(0, 0, 0, 0.06);
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--dark-surface);
+  }
+
+  .code-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(245, 240, 232, 0.15);
+  }
+
+  .code-dot:first-child { background: #ff5f57; }
+  .code-dot:nth-child(2) { background: #febc2e; }
+  .code-dot:nth-child(3) { background: #28c840; }
+
+  .code-title {
+    margin-left: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: rgba(245, 240, 232, 0.5);
+  }
+
+  pre {
+    padding: 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  pre::-webkit-scrollbar {
+    display: none;
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: var(--dark-text);
+  }
+
+  .comment {
+    color: rgba(245, 240, 232, 0.35);
+  }
+
+  .cmd {
+    color: var(--accent);
+  }
+
+  .code-result {
+    padding: 14px 24px;
+    border-top: 1px solid var(--dark-surface);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: rgba(245, 240, 232, 0.7);
+  }
+
+  .code-result .arrow {
+    color: var(--green);
+    font-weight: bold;
+  }
+
+  .code-result a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 900px) {
+    .quickstart-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+</style>

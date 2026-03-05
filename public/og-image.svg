@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#faf7f2"/>
+  <text x="600" y="280" text-anchor="middle" font-family="Georgia, serif" font-size="72" font-weight="bold" fill="#2c2418">Sous Clip</text>
+  <text x="600" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="28" fill="#7a6e5d">Self-hosted recipe extractor for cooking videos</text>
+  <line x1="500" y1="400" x2="700" y2="400" stroke="#c8542b" stroke-width="3"/>
+</svg>

@@ -1,0 +1,169 @@
+---
+const steps = [
+  { label: "Video URL", detail: "Paste link", color: "orange" },
+  { label: "Audio", detail: "yt-dlp download", color: "orange" },
+  { label: "Transcript", detail: "Whisper STT", color: "orange" },
+  { label: "Recipe", detail: "LLM extraction", color: "green" },
+];
+---
+
+<section class="pipeline-demo">
+  <div class="container">
+    <h2>From video to recipe<br />in one pipeline.</h2>
+    <p class="pipeline-sub">Every step runs locally on your machine. No data leaves your network.</p>
+
+    <div class="pipeline-flow">
+      {steps.map((step, i) => (
+        <>
+          <div class="node" data-reveal style={`--reveal-i: ${i}; --i: ${i}; --node-color: var(--${step.color === "green" ? "green" : "accent"})`}>
+            <div class="node-dot"></div>
+            <span class="node-label">{step.label}</span>
+            <span class="node-detail">{step.detail}</span>
+          </div>
+          {i < steps.length - 1 && (
+            <div class="arrow" style={`--i: ${i}`}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </div>
+          )}
+        </>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pipeline-demo {
+    padding: var(--section-pad) 0;
+    background: var(--dark-bg);
+    color: var(--dark-text);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ambient glow */
+  .pipeline-demo::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(200, 84, 43, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .pipeline-sub {
+    text-align: center;
+    color: rgba(245, 240, 232, 0.5);
+    font-size: 1rem;
+    margin-bottom: 56px;
+  }
+
+  .pipeline-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    animation: nodeGlow 3s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.7s);
+  }
+
+  .node-dot {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--node-color);
+    background: rgba(255, 255, 255, 0.03);
+    position: relative;
+    transition: box-shadow 0.3s;
+  }
+
+  .node-dot::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    background: var(--node-color);
+    opacity: 0.6;
+    animation: pulse 3s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.7s);
+  }
+
+  .node-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--dark-text);
+  }
+
+  .node-detail {
+    font-size: 0.7rem;
+    color: rgba(245, 240, 232, 0.35);
+    font-family: var(--font-mono);
+  }
+
+  .arrow {
+    color: rgba(245, 240, 232, 0.15);
+    animation: arrowFade 3s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.7s + 0.35s);
+  }
+
+  @keyframes nodeGlow {
+    0%, 100% {
+      filter: brightness(1);
+    }
+    30% {
+      filter: brightness(1.3);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.4;
+    }
+    30% {
+      transform: scale(1.15);
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes arrowFade {
+    0%, 100% {
+      opacity: 0.3;
+    }
+    30% {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .pipeline-flow {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .arrow {
+      transform: rotate(90deg);
+    }
+  }
+</style>

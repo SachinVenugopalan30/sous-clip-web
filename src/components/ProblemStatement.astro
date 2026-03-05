@@ -1,0 +1,63 @@
+<section class="problem">
+  <div class="container">
+    <div class="problem-inner">
+      <p>
+        You're scrolling. A recipe catches your eye - perfectly caramelized,
+        effortlessly plated. You think, <em>"I'll make that this weekend."</em>
+      </p>
+      <p class="bold">
+        You screenshot. You bookmark. You forget.
+      </p>
+      <p>
+        And the cloud apps that promise to help? They want your data, your
+        subscription, and your trust that they'll still exist next year.
+        Your recipes deserve better than that.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .problem {
+    padding: var(--section-pad) 0;
+  }
+
+  .problem-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .problem-inner p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .problem-inner p:last-child {
+    margin-bottom: 0;
+  }
+
+  .problem-inner p.bold {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .problem-inner em {
+    font-style: italic;
+    color: var(--text);
+  }
+
+  @media (max-width: 768px) {
+    .problem-inner p {
+      font-size: 1.05rem;
+    }
+
+    .problem-inner p.bold {
+      font-size: 1.25rem;
+    }
+  }
+</style>

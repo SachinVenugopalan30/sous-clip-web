@@ -1,0 +1,118 @@
+---
+const steps = [
+  {
+    number: "01",
+    title: "Paste a link",
+    description: "Drop any cooking video URL - YouTube, Instagram, TikTok. Sous Clip handles the rest.",
+    icon: "link",
+  },
+  {
+    number: "02",
+    title: "AI does the work",
+    description: "The video is downloaded, transcribed with Whisper, and parsed by an LLM into a structured recipe.",
+    icon: "wand",
+  },
+  {
+    number: "03",
+    title: "Recipe, saved",
+    description: "Title, ingredients, steps, timings - stored in your local SQLite database. No cloud. No sync. Just yours.",
+    icon: "book",
+  },
+];
+---
+
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <h2>How it works</h2>
+    <div class="steps-grid">
+      {steps.map((step, i) => (
+        <div class="step-card" data-reveal style={`--reveal-i: ${i}`}>
+          <div class="step-icon-wrap">
+            {step.icon === "link" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            )}
+            {step.icon === "wand" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>
+            )}
+            {step.icon === "book" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            )}
+          </div>
+          <span class="step-number">{step.number}</span>
+          <h3>{step.title}</h3>
+          <p>{step.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .how-it-works {
+    padding: var(--section-pad) 0;
+    background: var(--surface);
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    text-align: center;
+    margin-bottom: 56px;
+    letter-spacing: -0.01em;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+
+  .step-card {
+    text-align: center;
+  }
+
+  .step-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--cream);
+    color: var(--accent);
+    margin-bottom: 16px;
+    border: 1.5px solid var(--border);
+  }
+
+  .step-number {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .steps-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  }
+</style>
