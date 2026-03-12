@@ -3,32 +3,34 @@ const features = [
   {
     icon: "video",
     title: "Multi-platform support",
-    description: "YouTube, Instagram, TikTok - if yt-dlp can download it, Sous Clip can extract from it.",
+    description: "YouTube Shorts, Instagram Reels, TikTok. If yt-dlp can download it, Sous Clip can extract a recipe from it.",
   },
   {
     icon: "mic",
-    title: "Whisper transcription",
-    description: "OpenAI's Whisper turns spoken instructions into accurate text, even with background music.",
+    title: "Local Whisper transcription",
+    description: "On-device speech-to-text with OpenAI Whisper. Accurate even with background music, and no audio ever leaves your server.",
   },
   {
-    icon: "key",
-    title: "Your own API keys",
-    description: "Bring your own OpenAI, Anthropic, or Ollama setup. No middleman, no markup, no data harvesting.",
+    icon: "mealie",
+    title: "Mealie integration",
+    description: "Push extracted recipes directly to your self-hosted Mealie instance. No copy-pasting, no friction.",
+    link: "https://mealie.io/",
+    linkLabel: "mealie.io",
   },
   {
     icon: "share",
-    title: "Export & share",
-    description: "Copy recipes as Markdown or share a direct link. Clean formatting, every time.",
+    title: "Export and share",
+    description: "Copy recipes as Markdown or share a direct link. Clean, structured formatting every time.",
   },
   {
     icon: "bookmark",
-    title: "Recipe library",
-    description: "Browse, search, and filter your collection. Every recipe saved locally in SQLite.",
+    title: "Personal recipe library",
+    description: "Browse, search, and filter your collection. Every recipe stored locally in SQLite with no cloud sync required.",
   },
   {
     icon: "server",
-    title: "Docker-ready",
-    description: "One command to deploy. Runs on a Raspberry Pi, a NAS, or any machine with Docker.",
+    title: "Docker-ready self-hosting",
+    description: "One command to deploy. Runs on a Raspberry Pi, a Synology NAS, or any machine with Docker.",
   },
 ];
 ---
@@ -55,12 +57,20 @@ const features = [
             {feature.icon === "bookmark" && (
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/><line x1="15" y1="8" x2="9" y2="8"/><line x1="12" y1="5" x2="12" y2="11"/></svg>
             )}
+            {feature.icon === "mealie" && (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            )}
             {feature.icon === "server" && (
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
             )}
           </div>
           <h3>{feature.title}</h3>
-          <p>{feature.description}</p>
+          <p>
+            {feature.description}
+            {feature.link && (
+              <> <a href={feature.link} target="_blank" rel="noopener" class="feature-link">{feature.linkLabel} ↗</a></>
+            )}
+          </p>
         </div>
       ))}
     </div>
@@ -123,6 +133,18 @@ const features = [
     font-size: 0.9rem;
     color: var(--text-muted);
     line-height: 1.6;
+  }
+
+  .feature-link {
+    color: var(--accent);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s;
+  }
+
+  .feature-link:hover {
+    opacity: 0.75;
   }
 
   @media (max-width: 900px) {
