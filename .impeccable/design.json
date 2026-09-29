@@ -1,0 +1,352 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-29T16:24:09.387859+00:00",
+  "title": "Design System: Sous Clip (marketing site)",
+  "extensions": {
+    "colorMeta": {
+      "steel": {
+        "role": "neutral",
+        "displayName": "Pass Steel",
+        "canonical": "oklch(92.1% 0.003 247.9)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#242527",
+          "#414244",
+          "#606163",
+          "#818284",
+          "#a3a5a7",
+          "#c7c9cb",
+          "#edeff1"
+        ]
+      },
+      "steel-rail": {
+        "role": "neutral",
+        "displayName": "Brushed Rail",
+        "canonical": "oklch(86.5% 0.007 247.9)",
+        "tonalRamp": [
+          "#090b0e",
+          "#222528",
+          "#3f4246",
+          "#5e6265",
+          "#7f8386",
+          "#a2a5a9",
+          "#c6cace",
+          "#ebeff3"
+        ]
+      },
+      "steel-edge": {
+        "role": "neutral",
+        "displayName": "Rail Edge",
+        "canonical": "oklch(70.3% 0.012 252.1)",
+        "tonalRamp": [
+          "#080c10",
+          "#21262b",
+          "#3d4349",
+          "#5c6268",
+          "#7d838a",
+          "#a0a6ad",
+          "#c4cad1",
+          "#e9eff7"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Ticket Stock",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Printer Ink",
+        "canonical": "oklch(19.1% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Faded Ink",
+        "canonical": "oklch(40.8% 0.011 258.4)",
+        "tonalRamp": [
+          "#080b10",
+          "#22252b",
+          "#3e4248",
+          "#5d6268",
+          "#7e8389",
+          "#a1a5ac",
+          "#c5c9d1",
+          "#eaeff6"
+        ]
+      },
+      "orange": {
+        "role": "primary",
+        "displayName": "Ticket-Printer Orange",
+        "canonical": "oklch(55.3% 0.174 38.4)",
+        "tonalRamp": [
+          "#300000",
+          "#570000",
+          "#800800",
+          "#ab3000",
+          "#d3552a",
+          "#f67e57",
+          "#ffa682",
+          "#ffcfac"
+        ]
+      },
+      "orange-deep": {
+        "role": "primary",
+        "displayName": "Scorched Ribbon",
+        "canonical": "oklch(46.8% 0.145 38.6)",
+        "tonalRamp": [
+          "#2c0000",
+          "#520000",
+          "#7a1900",
+          "#a13c17",
+          "#c46242",
+          "#e6886a",
+          "#ffaf92",
+          "#ffd7bc"
+        ]
+      },
+      "orange-on-ink": {
+        "role": "primary",
+        "displayName": "Ribbon on Ink",
+        "canonical": "oklch(75.8% 0.159 55.9)",
+        "tonalRamp": [
+          "#260000",
+          "#4a0b00",
+          "#702900",
+          "#984800",
+          "#c2670d",
+          "#ed8732",
+          "#ffad5f",
+          "#ffd58e"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headline only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Ticket recipe title and station names."
+      },
+      "title-sm": {
+        "displayName": "Small Title",
+        "purpose": "Stub titles, spec terms, ticket section labels."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All running text."
+      },
+      "body-lede": {
+        "displayName": "Lede",
+        "purpose": "Hero lede, 40ch measure."
+      },
+      "body-sm": {
+        "displayName": "Small Body",
+        "purpose": "Fine print, ticket lines, captions, footer."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Code-ticket step headers only."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "Install commands and inline file names."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ticket-print",
+        "value": "clip-path inset(0 0 55% 0) to inset(0) 1.1s cubic-bezier(0.16, 1, 0.3, 1), once on load",
+        "purpose": "The hero ticket prints downward; the only entrance motion."
+      },
+      {
+        "name": "state-fast",
+        "value": "0.15s ease",
+        "purpose": "Background and colour changes on buttons and the badge."
+      },
+      {
+        "name": "toggle",
+        "value": "transform 0.2s ease",
+        "purpose": "FAQ plus collapsing to a minus."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation: none; transition: none; scroll-behavior: auto",
+        "purpose": "Applied globally under prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone-nav",
+        "value": "639px"
+      },
+      {
+        "name": "stack",
+        "value": "860px"
+      },
+      {
+        "name": "shot-detail",
+        "value": "700px"
+      }
+    ],
+    "focus": {
+      "value": "outline: 3px solid var(--orange); outline-offset: 3px",
+      "purpose": "Global :focus-visible ring."
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single install action; orange fill, display face.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Install Sous Clip</a>",
+      "css": ".ds-btn-primary { display:inline-flex; align-items:center; min-height:52px; padding:0 24px; background:var(--orange, #c2410c); color:var(--paper, #ffffff); font-family:\"Big Shoulders Display\", \"Arial Narrow\", sans-serif; font-weight:900; font-size:24px; letter-spacing:0.02em; text-transform:uppercase; text-decoration:none; border-radius:0; transition:background-color 0.15s ease; } .ds-btn-primary:hover { background:var(--orange-deep, #9a3309); } .ds-btn-primary:focus-visible { outline: 3px solid var(--orange, #c2410c); outline-offset: 3px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Copy button and other secondary actions; inverts on hover.",
+      "html": "<button class=\"ds-btn-outline\" type=\"button\">Copy</button>",
+      "css": ".ds-btn-outline { min-height:44px; padding:0 16px; border:2px solid var(--ink, #141414); background:var(--paper, #ffffff); color:var(--ink, #141414); font:700 14px \"Hanken Grotesk\", system-ui, sans-serif; border-radius:0; cursor:pointer; transition:background-color 0.15s ease, color 0.15s ease; } .ds-btn-outline:hover { background:var(--ink, #141414); color:var(--paper, #ffffff); } .ds-btn-outline:focus-visible { outline: 3px solid var(--orange, #c2410c); outline-offset: 3px; }"
+    },
+    {
+      "name": "GitHub Stars Badge",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Outline link with the live star count split off by a rule.",
+      "html": "<a class=\"ds-gh\" href=\"#\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path fill=\"currentColor\" d=\"M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z\"/></svg><span>Star on GitHub</span><span class=\"ds-gh-count\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 16\" width=\"12\" height=\"12\"><path fill=\"currentColor\" d=\"M8 .25l2.35 4.76 5.25.77-3.8 3.7.9 5.23L8 12.24l-4.7 2.47.9-5.23-3.8-3.7 5.25-.77z\"/></svg><span>6</span></span></a>",
+      "css": ".ds-gh { display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:0 14px; border:2px solid var(--ink, #141414); background:var(--paper, #ffffff); color:var(--ink, #141414); font:700 15px \"Hanken Grotesk\", system-ui, sans-serif; text-decoration:none; transition:background-color 0.15s ease, color 0.15s ease; } .ds-gh:hover { background:var(--ink, #141414); color:var(--paper, #ffffff); } .ds-gh:focus-visible { outline: 3px solid var(--orange, #c2410c); outline-offset: 3px; } .ds-gh-count { display:inline-flex; align-items:center; gap:4px; padding-left:10px; border-left:2px solid currentColor; font-variant-numeric:tabular-nums; }"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Header wordmark and section links; Install in orange.",
+      "html": "<header class=\"ds-nav\"><a class=\"ds-brand\" href=\"#\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z\"/><path d=\"M6 17h12\"/></svg><span>Sous Clip</span></a><nav><a href=\"#\">How it works</a><a href=\"#\">FAQ</a><a class=\"ds-nav-install\" href=\"#\">Install</a></nav></header>",
+      "css": ".ds-nav { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:64px; padding:0 16px; background:var(--steel, #e3e5e7); color:var(--ink, #141414); font-family:\"Hanken Grotesk\", system-ui, sans-serif; } .ds-brand { display:inline-flex; align-items:center; gap:8px; min-height:44px; color:var(--orange, #c2410c); text-decoration:none; } .ds-brand span { font-family:\"Big Shoulders Display\", \"Arial Narrow\", sans-serif; font-weight:900; font-size:30px; text-transform:uppercase; color:var(--ink, #141414); } .ds-nav nav { display:flex; gap:4px; } .ds-nav nav a { display:inline-flex; align-items:center; min-height:44px; padding:0 12px; font-weight:500; color:var(--ink, #141414); text-decoration:none; } .ds-nav nav a:hover { text-decoration:underline; } .ds-nav a:focus-visible { outline: 3px solid var(--orange, #c2410c); outline-offset: 3px; } .ds-nav nav a.ds-nav-install { font-weight:700; color:var(--orange, #c2410c); }"
+    },
+    {
+      "name": "Order Ticket",
+      "kind": "card",
+      "refersTo": "ticket",
+      "description": "Signature: clipped white ticket with stamp, tear line and ruled sections.",
+      "html": "<div class=\"ds-ticket-wrap\"><div class=\"ds-ticket\"><span class=\"ds-clip\"></span><div class=\"ds-ticket-head\"><span class=\"ds-stamp\">Order up</span><span class=\"ds-ticket-no\">No. 0417</span></div><p class=\"ds-ticket-in\">In: a cooking video, shared from a phone</p><hr class=\"ds-tear\"><h2 class=\"ds-ticket-title\">Steamed Pork Dumplings</h2><p class=\"ds-ticket-meta\">20 min cook · Chinese</p><h3 class=\"ds-ticket-label\">Ingredients <span>12</span></h3><ul class=\"ds-ing\"><li>ground pork</li><li>garlic</li><li>ginger</li><li>green onions</li></ul></div></div>",
+      "css": ".ds-ticket-wrap { background:var(--steel, #e3e5e7); padding:32px 16px 16px; } .ds-ticket { position:relative; max-width:440px; padding:28px 28px 24px; background:var(--paper, #ffffff); color:var(--ink, #141414); font:400 15px/1.55 \"Hanken Grotesk\", system-ui, sans-serif; } .ds-clip { position:absolute; top:-9px; left:50%; width:56px; height:18px; margin-left:-28px; background:var(--ink, #141414); border-radius:2px 2px 4px 4px; } .ds-ticket-head { display:flex; align-items:center; justify-content:space-between; } .ds-stamp { display:inline-block; padding:4px 10px 2px; border:3px solid var(--orange, #c2410c); color:var(--orange, #c2410c); font:900 26px/1 \"Big Shoulders Display\", \"Arial Narrow\", sans-serif; text-transform:uppercase; transform:rotate(-3deg); } .ds-ticket-no { font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:0.06em; } .ds-ticket-in { margin:14px 0 0; color:var(--ink-soft, #464a50); } .ds-tear { margin:18px -28px; border:0; border-top:2px dashed var(--ink, #141414); } .ds-ticket-title { margin:0; font:900 34px/0.95 \"Big Shoulders Display\", \"Arial Narrow\", sans-serif; text-transform:uppercase; } .ds-ticket-meta { margin:10px 0 0; font-size:14px; font-weight:700; color:var(--orange, #c2410c); } .ds-ticket-label { display:flex; justify-content:space-between; margin:20px 0 0; padding-bottom:4px; border-bottom:2px solid var(--ink, #141414); font:900 20px \"Big Shoulders Display\", \"Arial Narrow\", sans-serif; text-transform:uppercase; } .ds-ing { list-style:none; columns:2; column-gap:20px; margin:10px 0 0; padding:0; } .ds-ing li { position:relative; padding:2px 0 2px 20px; } .ds-ing li::before { content:''; position:absolute; left:0; top:7px; width:11px; height:11px; border:2px solid var(--ink, #141414); box-sizing:border-box; }"
+    },
+    {
+      "name": "Rail with Stubs",
+      "kind": "custom",
+      "refersTo": "stub",
+      "description": "Steel rail holding tilted, clipped ticket stubs.",
+      "html": "<div class=\"ds-rail\"><div class=\"ds-rail-bar\"></div><ul class=\"ds-stubs\"><li class=\"ds-stub\" style=\"--tilt:-1.5deg\"><span class=\"ds-stub-clip\"></span><span class=\"ds-stub-title\">Teriyaki Sauce</span><span class=\"ds-stub-foot\"><span>50 min</span><b>No. 0412</b></span></li><li class=\"ds-stub\" style=\"--tilt:1deg\"><span class=\"ds-stub-clip\"></span><span class=\"ds-stub-title\">Cleaned Bacon Fat</span><span class=\"ds-stub-foot\"><span>5 min</span><b>No. 0414</b></span></li></ul></div>",
+      "css": ".ds-rail { background:var(--steel, #e3e5e7); padding-top:8px; } .ds-rail-bar { height:18px; background:var(--steel-rail, #cfd3d7); border-top:2px solid var(--paper, #ffffff); border-bottom:3px solid var(--steel-edge, #9aa0a7); } .ds-stubs { list-style:none; display:flex; gap:16px; margin:-6px 0 0; padding:0 16px 12px; } .ds-stub { position:relative; flex:0 0 196px; display:grid; gap:2px; padding:20px 14px 12px; background:var(--paper, #ffffff); color:var(--ink, #141414); transform:rotate(var(--tilt)); transform-origin:top center; font-family:\"Hanken Grotesk\", system-ui, sans-serif; } .ds-stub-clip { position:absolute; top:-6px; left:50%; width:34px; height:14px; margin-left:-17px; background:var(--ink, #141414); border-radius:2px 2px 4px 4px; } .ds-stub-title { font:700 21px/1.05 \"Big Shoulders Display\", \"Arial Narrow\", sans-serif; text-transform:uppercase; } .ds-stub-foot { display:flex; justify-content:space-between; margin-top:6px; font-size:14px; color:var(--ink-soft, #464a50); font-variant-numeric:tabular-nums; } .ds-stub-foot b { color:var(--ink, #141414); }"
+    },
+    {
+      "name": "Spec Sheet",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Ruled definition list with display-face terms.",
+      "html": "<dl class=\"ds-spec\"><div><dt>Recipes stored</dt><dd>One SQLite file on your server</dd></div><div><dt>Fully offline</dt><dd>Yes, with a local model</dd></div><div><dt>Price</dt><dd>Free, MIT license</dd></div></dl>",
+      "css": ".ds-spec { margin:0; border-top:4px solid var(--ink, #141414); color:var(--ink, #141414); font:400 17px/1.55 \"Hanken Grotesk\", system-ui, sans-serif; background:var(--paper, #ffffff); } .ds-spec div { display:grid; grid-template-columns:minmax(120px,0.8fr) minmax(0,1.2fr); gap:16px; padding:12px 0; border-bottom:1px solid var(--ink, #141414); } .ds-spec dt { font:700 21px/1.1 \"Big Shoulders Display\", \"Arial Narrow\", sans-serif; text-transform:uppercase; } .ds-spec dd { margin:0; }"
+    },
+    {
+      "name": "Code Ticket",
+      "kind": "card",
+      "refersTo": "code-ticket",
+      "description": "White command ticket on the ink band with dashed step tears and Copy.",
+      "html": "<div class=\"ds-ink\"><div class=\"ds-code\"><div class=\"ds-code-head\"><span>1. Get it</span><button type=\"button\">Copy</button></div><pre><code>git clone https://github.com/SachinVenugopalan30/sous-clip.git\ncd sous-clip</code></pre><p class=\"ds-code-step\"><strong>2. Edit .env</strong> before starting.</p></div></div>",
+      "css": ".ds-ink { background:var(--ink, #141414); padding:24px; } .ds-code { background:var(--paper, #ffffff); color:var(--ink, #141414); font:400 15px/1.55 \"Hanken Grotesk\", system-ui, sans-serif; } .ds-code-head { display:flex; align-items:center; justify-content:space-between; padding:8px 8px 8px 20px; border-bottom:2px dashed var(--ink, #141414); font-weight:700; font-size:13px; letter-spacing:0.06em; text-transform:uppercase; } .ds-code-head button { min-height:44px; padding:0 16px; border:2px solid var(--ink, #141414); background:var(--paper, #ffffff); color:var(--ink, #141414); font:700 14px \"Hanken Grotesk\", system-ui, sans-serif; cursor:pointer; } .ds-code-head button:hover { background:var(--ink, #141414); color:var(--paper, #ffffff); } .ds-code-head button:focus-visible { outline: 3px solid var(--orange, #c2410c); outline-offset: 3px; } .ds-code pre { margin:0; padding:20px; overflow-x:auto; font:14px/1.7 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; } .ds-code-step { margin:0; padding:16px 20px; border-top:2px dashed var(--ink, #141414); }"
+    },
+    {
+      "name": "FAQ Toggle",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Native details row with an orange plus that collapses to a minus.",
+      "html": "<div class=\"ds-faq\"><details open><summary>Is it free?<span class=\"ds-toggle\" aria-hidden=\"true\"></span></summary><p>Yes. Sous Clip is open source under the MIT license.</p></details><details><summary>Does it work with Mealie?<span class=\"ds-toggle\" aria-hidden=\"true\"></span></summary><p>Yes.</p></details></div>",
+      "css": ".ds-faq { color:var(--ink, #141414); font:400 17px/1.55 \"Hanken Grotesk\", system-ui, sans-serif; } .ds-faq details { border-bottom:1px solid var(--ink, #141414); } .ds-faq details:first-child { border-top:4px solid var(--ink, #141414); } .ds-faq summary { display:flex; justify-content:space-between; gap:16px; padding:16px 0; min-height:44px; font-weight:700; font-size:19px; cursor:pointer; list-style:none; } .ds-faq summary::-webkit-details-marker { display:none; } .ds-faq summary:focus-visible { outline: 3px solid var(--orange, #c2410c); outline-offset: 3px; } .ds-toggle { position:relative; flex:0 0 18px; height:18px; margin-top:4px; } .ds-toggle::before, .ds-toggle::after { content:''; position:absolute; background:var(--orange, #c2410c); } .ds-toggle::before { left:0; right:0; top:7.5px; height:3px; } .ds-toggle::after { top:0; bottom:0; left:7.5px; width:3px; transition:transform 0.2s ease; } .ds-faq details[open] .ds-toggle::after { transform:scaleY(0); } .ds-faq details p { margin:0; padding-bottom:18px; max-width:60ch; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Order Up",
+    "overview": "The site is the pass of a working kitchen. A cool steel field is the counter, a brushed rail runs across it, and bright white ticket stock hangs from black clips. Everything written on a ticket is printed in black ink; burnt orange is the printer's second ribbon, used for the things a cook must not miss: the stamp, modifiers, step numbers, the one action that matters. Type is signage over paperwork: a condensed, heavy display face for anything that would be shouted across the line, and a plain workhorse sans for everything read up close.\n\nThe world is flat and physical at once. Nothing floats on a shadow; depth comes from paper sitting on steel, from clips biting into ticket tops, and from a slight hand-hung tilt on the stubs. Density follows a real ticket: tight line-heights in display type, generous air between bands, tabular figures wherever a number is counted.\n\nThe site refuses the SaaS page: no gradients, no icon-card grids, no mock terminals, no glow. Proof is real: app screenshots hung on the rail and one real extraction printed as a ticket.",
+    "keyCharacteristics": [
+      "Steel field, white ticket stock, black ink, one burnt-orange ribbon.",
+      "Condensed uppercase signage (Big Shoulders Display) over a workhorse sans (Hanken Grotesk).",
+      "Square corners everywhere; the only rounding is on the metal clip.",
+      "Rules, dashed tear lines and solid ink borders do the structural work shadows would do elsewhere.",
+      "One motion moment: the hero ticket prints once on load."
+    ],
+    "rules": [
+      {
+        "name": "The Second Ribbon Rule",
+        "body": "Orange marks what a cook must not miss, and nothing else. It is never a background for a band or a card; the only orange fill is the primary button.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ribbon Swap Rule",
+        "body": "On the ink band, brand orange gives way to the lighter orange-on-ink. Brand orange text on ink is never shipped.",
+        "section": "colors"
+      },
+      {
+        "name": "The Signage Rule",
+        "body": "The display face is always uppercase and always 700 or 900. Anything set in it is something you would read from across the kitchen; running text never uses it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "Every counted number (ticket numbers, stub times, ingredient and step counts, step numerals, star counts) uses tabular figures.",
+        "section": "typography"
+      },
+      {
+        "name": "The Paper-on-Steel Rule",
+        "body": "Lift is shown by contrast of material, never by `box-shadow`. A new surface that needs to feel raised becomes a white ticket on steel, clipped to a rail.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do put new content on white ticket stock over steel, and hang it from a clip when it belongs to the rail.",
+      "Do keep orange for stamps, numbers, modifiers and the single primary action; swap to orange-on-ink on the ink band.",
+      "Do set headings in the uppercase display face at 700 or 900, and all reading text in Hanken Grotesk at 17px/1.55.",
+      "Do use tabular figures for every count, time and ticket number.",
+      "Do separate with ink rules and dashed tear lines at the recorded weights (4px opener, 2px label rule, 1px row rule, 2px dashed tear).",
+      "Do keep touch targets at 44px or more and the orange focus outline on every interactive element.",
+      "Do show the live GitHub star count from the API, never a typed-in number."
+    ],
+    "donts": [
+      "Don't add `box-shadow`, gradients, blur or glow; depth is paper on steel.",
+      "Don't round the corners of paper surfaces or buttons; only the metal clip is rounded.",
+      "Don't fill bands or cards with orange, or set brand orange text on the ink band.",
+      "Don't use the display face for running text or in lowercase.",
+      "Don't add motion beyond the one ticket print, and never motion that survives reduced-motion.",
+      "Don't borrow the app's Playfair Display or DM Sans here."
+    ]
+  }
+}
