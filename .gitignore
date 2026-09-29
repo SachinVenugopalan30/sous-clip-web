@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# impeccable run artifacts (review screenshots, decision-page sessions)
+.impeccable/review/
+.impeccable/questions/

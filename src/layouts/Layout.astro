@@ -1,13 +1,12 @@
 ---
 interface Props {
   title: string;
-  description?: string;
+  description: string;
 }
 
-const {
-  title,
-  description = "Sous Clip is an open-source, self-hosted recipe extractor that converts YouTube, TikTok, and Instagram cooking videos into structured recipes. Supports Mealie integration. Powered by Whisper and AI.",
-} = Astro.props;
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/og-image.png", Astro.site);
 ---
 
 <!doctype html>
@@ -15,74 +14,68 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#E3E5E7" />
+    <meta name="color-scheme" content="light" />
 
-    <!-- OG / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Sous Clip" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/og-image.png" />
-    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Sous Clip: an order ticket turning a cooking video into a recipe" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:image" content={ogImage} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <link rel="preload" href="/fonts/big-shoulders-display.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/hanken-grotesk.woff2" as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
   </head>
   <body>
     <slot />
-    <script>
-      const obs = new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("revealed");
-            obs.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.15 });
-      document.querySelectorAll("[data-reveal]").forEach((el) => obs.observe(el));
-    </script>
   </body>
 </html>
 
 <style is:global>
+  @font-face {
+    font-family: "Big Shoulders Display";
+    src: url("/fonts/big-shoulders-display.woff2") format("woff2");
+    font-weight: 100 900;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Hanken Grotesk";
+    src: url("/fonts/hanken-grotesk.woff2") format("woff2");
+    font-weight: 100 900;
+    font-display: swap;
+  }
+
   :root {
-    /* Palette */
-    --cream: #faf7f2;
-    --warm-white: #fefcf9;
-    --surface: #f5f0e8;
-    --border: #e8e0d4;
-    --text: #2c2418;
-    --text-muted: #7a6e5d;
-    --accent: #c8542b;
-    --accent-hover: #b04824;
-    --accent-glow: rgba(200, 84, 43, 0.25);
-    --dark-bg: #1a1714;
-    --dark-surface: #2c2620;
-    --dark-text: #f5f0e8;
-    --green: #3a9a5c;
-    --green-glow: rgba(58, 154, 92, 0.3);
+    /* The pass: steel field, white ticket stock, black ink, burnt orange as the printer's second ribbon */
+    --steel: #e3e5e7;
+    --steel-rail: #cfd3d7;
+    --steel-edge: #9aa0a7;
+    --paper: #ffffff;
+    --ink: #141414;
+    --ink-soft: #464a50; /* 7.5:1 on steel, 9:1 on paper */
+    --orange: #c2410c; /* brand; 5.2:1 on paper, 4.6:1 on steel */
+    --orange-deep: #9a3309;
 
-    /* Typography */
-    --font-display: "Playfair Display", Georgia, serif;
-    --font-body: "DM Sans", system-ui, sans-serif;
-    --font-mono: "JetBrains Mono", "Fira Code", monospace;
+    --display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+    --body: "Hanken Grotesk", system-ui, sans-serif;
+    --code: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-    /* Spacing & Radii */
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
-    --section-pad: 96px;
-    --container: 1120px;
+    --gutter: clamp(16px, 4vw, 40px);
+    --measure: 1200px;
   }
 
   *,
@@ -95,58 +88,66 @@ const {
 
   html {
     scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: 24px;
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--steel-edge) var(--steel);
   }
 
   body {
-    font-family: var(--font-body);
-    color: var(--text);
-    background: var(--cream);
-    line-height: 1.6;
-    overflow-x: hidden;
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--steel);
+    caret-color: var(--orange);
+    accent-color: var(--orange);
   }
 
   img {
     max-width: 100%;
+    height: auto;
     display: block;
   }
 
   a {
     color: inherit;
-    text-decoration: none;
+    text-underline-offset: 3px;
   }
 
-  /* Utility */
-  .container {
-    max-width: var(--container);
+  ::selection {
+    background: var(--orange);
+    color: var(--paper);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--orange);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    max-width: var(--measure);
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 var(--gutter);
   }
 
-  /* Scroll reveal */
-  [data-reveal] {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-    transition-delay: calc(var(--reveal-i, 0) * 0.1s);
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 
-  [data-reveal].revealed {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Noise texture overlay for depth */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 256px 256px;
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
   }
 </style>

@@ -1,22 +1,943 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
-import Hero from "../components/Hero.astro";
-import ProblemStatement from "../components/ProblemStatement.astro";
-import HowItWorks from "../components/HowItWorks.astro";
-import FeaturesGrid from "../components/FeaturesGrid.astro";
-import PipelineDemo from "../components/PipelineDemo.astro";
-import QuickStart from "../components/QuickStart.astro";
-import Footer from "../components/Footer.astro";
+import GitHubStars from "../components/GitHubStars.astro";
+import { REPO_URL } from "../lib/github";
+
+const title = "Sous Clip: save recipes from TikTok, Reels and Shorts";
+const description =
+  "Share a cooking video and get a clean recipe back: ingredients, steps, times and servings, saved in a library on your own server. Free, open source, self-hosted.";
+
+// Real output from the app (see the recipe screenshot below), shown as the worked example
+const example = {
+  title: "Steamed Pork Dumplings (Layered Wrapper Style)",
+  meta: ["20 min cook", "Chinese", "Steamed", "Pork"],
+  ingredients: [
+    "ground pork", "garlic", "ginger", "green onions", "Chinese light soy sauce", "oyster sauce",
+    "cornstarch", "water", "salt", "white pepper", "gyoza wrappers", "chili oil",
+  ],
+  steps: [
+    "Grate the garlic and ginger.",
+    "In a bowl, combine the pork, garlic, ginger, green onions, soy sauce, oyster sauce, cornstarch, a little water, salt and white pepper.",
+    "Mix the filling until well combined.",
+    "Place a wet gyoza wrapper at the bottom of a ramekin.",
+  ],
+  moreSteps: 5,
+};
+
+// Recipes already on the rail: real titles and times from the library screenshot
+const rail = [
+  { title: "Teriyaki Sauce", time: "50 min" },
+  { title: "Instant Kimchi (No Fermentation)", time: "70 min" },
+  { title: "Cleaned Bacon Fat", time: "5 min" },
+  { title: "Korean BBQ Hawaiian Roll Sliders", time: null },
+];
+
+const faq = [
+  {
+    q: "Which apps does Sous Clip work with?",
+    a: "YouTube Shorts, Instagram Reels and TikTok. Downloads go through yt-dlp. Long-form videos haven't been tested.",
+  },
+  {
+    q: "Do I have to pay for an AI API?",
+    a: "No. Point Sous Clip at a local model through Ollama or any OpenAI- or Anthropic-compatible server and it runs fully offline. You can also use an Anthropic or OpenAI API key.",
+  },
+  {
+    q: "Where are my recipes stored?",
+    a: "In a single SQLite file on your own server. Your recipes never leave it; only the transcript goes to the AI provider you choose, and nothing does if that model is local.",
+  },
+  {
+    q: "Can I use it from my phone?",
+    a: "Yes. Put Sous Clip behind HTTPS (see the reverse-proxy guide), install it from your phone's browser, then share videos to it. On Android it appears in the share sheet; on iPhone, paste the link if it doesn't.",
+  },
+  {
+    q: "What if the video has no voiceover?",
+    a: "Sous Clip reads the video's caption as well as the speech. If a video has neither, there is nothing to extract.",
+  },
+  {
+    q: "Does it work with Mealie?",
+    a: "Yes. Connect your Mealie instance in Settings and send recipes to it when you extract them or later from your library.",
+  },
+  {
+    q: "Is it free?",
+    a: "Yes. Sous Clip is open source under the MIT license.",
+  },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Sous Clip",
+    description,
+    url: Astro.site?.href,
+    applicationCategory: "LifestyleApplication",
+    operatingSystem: "Linux, macOS, Windows (Docker or Podman)",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    license: "https://opensource.org/licenses/MIT",
+    codeRepository: REPO_URL,
+    screenshot: new URL("/shots/recipe-1600.webp", Astro.site).href,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map(({ q, a }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
+  },
+];
+
+const installGet = `git clone ${REPO_URL}.git
+cd sous-clip
+cp .env.example .env`;
+const installRun = `python3 scripts/download-model.py
+docker compose pull
+docker compose up -d`;
 ---
 
-<Layout title="Sous Clip - Self-Hosted Recipe Extractor for YouTube, TikTok and Instagram | Mealie Integration">
-  <Navbar />
-  <Hero />
-  <ProblemStatement />
-  <HowItWorks />
-  <FeaturesGrid />
-  <PipelineDemo />
-  <QuickStart />
-  <Footer />
+<Layout title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <header class="top">
+    <div class="wrap top-inner">
+      <a class="brand" href="/" aria-label="Sous Clip home">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          ><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path><path d="M6 17h12"></path></svg
+        >
+        <span>Sous Clip</span>
+      </a>
+      <nav aria-label="Sections">
+        <a href="#line">How it works</a>
+        <a href="#screens">Screens</a>
+        <a href="#faq">FAQ</a>
+        <a class="nav-install" href="#install">Install</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- The rail: recipes already on the pass -->
+    <div class="rail">
+      <div class="rail-bar"></div>
+      <ul class="rail-tickets wrap" aria-label="Recipes on the rail" tabindex="0">
+        {rail.map((r, i) => (
+          <li class="stub" style={`--tilt:${[-1.5, 1, -0.5, 1.5][i]}deg`}>
+            <span class="clip" aria-hidden="true"></span>
+            <span class="stub-title">{r.title}</span>
+            <span class="stub-foot">
+              <span>{r.time}</span>
+              <span class="stub-no">No. {String(412 + i).padStart(4, "0")}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <h1 id="hero-title">You watched the recipe. <span>Sous Clip wrote it down.</span></h1>
+        <p class="lede">
+          Share a TikTok, Instagram Reel or YouTube Short and get a clean recipe back: ingredients, steps, times and
+          servings, saved in a library on your own server.
+        </p>
+        <div class="actions">
+          <a class="btn-primary" href="#install">Install Sous Clip</a>
+          <GitHubStars />
+        </div>
+        <p class="fineprint">
+          Free and open source (MIT). Runs in Docker on your own machine, with the AI model you choose, even a local
+          one.
+        </p>
+      </div>
+
+      <figure class="ticket" aria-labelledby="ticket-title">
+        <span class="clip clip-lg" aria-hidden="true"></span>
+        <div class="ticket-print">
+          <div class="ticket-head">
+            <span class="stamp">Order up</span>
+            <span class="ticket-no">No. 0417</span>
+          </div>
+          <p class="ticket-in">In: a cooking video, shared from a phone</p>
+          <hr class="tear" />
+          <h2 id="ticket-title" class="ticket-title">{example.title}</h2>
+          <p class="ticket-meta">{example.meta.join("  ·  ")}</p>
+          <h3 class="ticket-label">Ingredients <span>{example.ingredients.length}</span></h3>
+          <ul class="ticket-ingredients">
+            {example.ingredients.map((i) => <li>{i}</li>)}
+          </ul>
+          <h3 class="ticket-label">Steps <span>{example.steps.length + example.moreSteps}</span></h3>
+          <ol class="ticket-steps">
+            {example.steps.map((s) => <li>{s}</li>)}
+          </ol>
+          <p class="ticket-more">+ {example.moreSteps} more steps in your library</p>
+        </div>
+        <figcaption class="ticket-caption">Example extraction: real output from Sous Clip</figcaption>
+      </figure>
+    </section>
+
+    <section id="line" class="band band-paper" aria-labelledby="line-title">
+      <div class="wrap">
+        <h2 id="line-title" class="section-title">How an order gets cooked</h2>
+        <ol class="stations">
+          <li>
+            <h3><span class="station-no">1</span> Order in</h3>
+            <p>
+              Tap Share in TikTok, Instagram or YouTube and pick Sous Clip, or paste the link into it. Install it on
+              your phone and it sits right next to the feed.
+            </p>
+          </li>
+          <li>
+            <h3><span class="station-no">2</span> On the line</h3>
+            <p>
+              Your server downloads the video, transcribes the speech with Whisper right there, reads the caption, and
+              your chosen AI model writes the recipe.
+            </p>
+          </li>
+          <li>
+            <h3><span class="station-no">3</span> Order up</h3>
+            <p>
+              The recipe lands in your library. Search it, filter by cooking time, scale the servings, edit it, share a
+              link, or send it to Mealie.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="screens" class="band" aria-labelledby="screens-title">
+      <div class="wrap">
+        <h2 id="screens-title" class="section-title">The real thing</h2>
+        <p class="section-lede">Screenshots from the app, not mockups.</p>
+      </div>
+      <ul class="shots wrap" aria-label="App screenshots" tabindex="0">
+        {[
+          { f: "library", detail: true, alt: "Sous Clip library: recipe cards with cooking times, ingredients and tags", cap: "Your library, searchable by name, ingredient and tag" },
+          { f: "recipe", detail: true, alt: "A saved recipe: numbered steps for steamed pork dumplings", cap: "A recipe, ready to cook" },
+          { f: "extraction", detail: false, alt: "Extraction in progress: download, transcribe, extract and save steps", cap: "Extraction, step by step" },
+        ].map((s) => (
+          <li class="shot">
+            <span class="clip" aria-hidden="true"></span>
+            <figure>
+              <picture>
+                {s.detail && <source media="(max-width: 700px)" srcset={`/shots/${s.f}-detail-800.webp`} />}
+              <img
+                src={`/shots/${s.f}-800.webp`}
+                srcset={`/shots/${s.f}-800.webp 800w, /shots/${s.f}-1600.webp 1600w`}
+                sizes="(max-width: 700px) 85vw, 560px"
+                width="1600"
+                height="1041"
+                alt={s.alt}
+                loading="lazy"
+                decoding="async"
+              />
+              </picture>
+              <figcaption>{s.cap}</figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section id="kitchen" class="band band-paper" aria-labelledby="kitchen-title">
+      <div class="wrap kitchen">
+        <div>
+          <h2 id="kitchen-title" class="section-title">Your kitchen, your rules</h2>
+          <p class="section-lede">
+            Your recipes never leave your server. The transcript goes to the AI provider you pick, or nowhere at all if
+            that model runs locally.
+          </p>
+        </div>
+        <dl class="spec">
+          <div><dt>Recipes stored</dt><dd>One SQLite file on your server</dd></div>
+          <div><dt>Transcription</dt><dd>Whisper, on your server (CPU or NVIDIA GPU)</dd></div>
+          <div><dt>AI model</dt><dd>Anthropic, OpenAI, Ollama, or any OpenAI- or Anthropic-compatible endpoint</dd></div>
+          <div><dt>Fully offline</dt><dd>Yes, with a local model</dd></div>
+          <div><dt>Runs on</dt><dd>Docker or Podman, amd64 and arm64</dd></div>
+          <div><dt>On your phone</dt><dd>Installs as an app over HTTPS; shares from the feed on Android</dd></div>
+          <div><dt>Works with</dt><dd>Mealie (optional)</dd></div>
+          <div><dt>Price</dt><dd>Free, MIT license</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section id="install" class="band band-ink" aria-labelledby="install-title">
+      <div class="wrap install">
+        <div>
+          <h2 id="install-title" class="section-title">Install it</h2>
+          <p class="section-lede">It's self-hosted, so it takes a machine that runs Docker, a few commands and an AI model.</p>
+          <h3 class="need-title">You'll need</h3>
+          <ul class="need">
+            <li>A computer or home server with Docker or Podman</li>
+            <li>An Anthropic or OpenAI API key, or a local model (Ollama or any compatible server)</li>
+            <li>Python 3, once, to download the Whisper model</li>
+          </ul>
+        </div>
+        <div class="code-ticket">
+          <div class="code-head">
+            <span>1. Get it</span>
+            <button class="copy" type="button" data-copy hidden aria-label="Copy step 1 commands">Copy</button>
+          </div>
+          <pre><code set:text={installGet} /></pre>
+          <p class="code-step">
+            <strong>2. Edit <code>.env</code>:</strong> set <code>APP_PASSWORD</code>, <code>JWT_SECRET</code> and your AI
+            model or API key. The app won't start with the example values.
+          </p>
+          <div class="code-head">
+            <span>3. Start it</span>
+            <button class="copy" type="button" data-copy hidden aria-label="Copy step 3 commands">Copy</button>
+          </div>
+          <pre><code set:text={installRun} /></pre>
+          <p class="code-after">
+            Then open <strong>http://localhost:3000</strong> and sign in with the password you set. Guides for
+            <a href={`${REPO_URL}#gpu-support`}>GPU</a>, <a href={`${REPO_URL}#podman`}>Podman</a>,
+            <a href={`${REPO_URL}/blob/main/docs/reverse-proxy.md`}>reverse proxies</a> and
+            <a href={`${REPO_URL}/blob/main/docs/pwa.md`}>phone install</a> are in the README.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="band" aria-labelledby="faq-title">
+      <div class="wrap faq">
+        <h2 id="faq-title" class="section-title">Questions</h2>
+        <div>
+          {faq.map(({ q, a }) => (
+            <details>
+              <summary>{q}<span class="toggle" aria-hidden="true"></span></summary>
+              <p>{a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-inner">
+      <p><strong>Sous Clip</strong> · MIT licensed · made by SachinVenugopalan30</p>
+      <GitHubStars label="GitHub" />
+    </div>
+  </footer>
 </Layout>
+
+<script>
+  // Copy buttons only appear where the clipboard API exists; each copies the block right after its header
+  if (navigator.clipboard) {
+    document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((button) => {
+      const code = button.closest(".code-head")?.nextElementSibling?.querySelector("code");
+      if (!code) return;
+      button.hidden = false;
+      button.addEventListener("click", async () => {
+        const label = button.getAttribute("aria-label") ?? "Copy";
+        try {
+          await navigator.clipboard.writeText(code.textContent ?? "");
+          button.textContent = "Copied";
+        } catch {
+          button.textContent = "Copy failed";
+        }
+        button.setAttribute("aria-label", button.textContent); // announce the result, not the old label
+        setTimeout(() => {
+          button.textContent = "Copy";
+          button.setAttribute("aria-label", label);
+        }, 2000);
+      });
+    });
+  }
+</script>
+
+<style>
+  /* Header */
+  .top {
+    background: var(--steel);
+  }
+  .top-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 64px;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    color: var(--orange);
+    text-decoration: none;
+  }
+  .brand span {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 30px;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 12px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  .nav-install {
+    font-weight: 700;
+    color: var(--orange);
+  }
+  @media (max-width: 639px) {
+    nav a:not(.nav-install) {
+      display: none;
+    }
+  }
+
+  /* The rail */
+  .rail {
+    position: relative;
+    padding-top: 8px;
+  }
+  .rail-bar {
+    height: 18px;
+    background: var(--steel-rail);
+    border-top: 2px solid var(--paper);
+    border-bottom: 3px solid var(--steel-edge);
+  }
+  .rail-tickets {
+    list-style: none;
+    display: flex;
+    gap: 16px;
+    margin-top: -6px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+  .rail-tickets::-webkit-scrollbar {
+    display: none;
+  }
+  .stub {
+    position: relative;
+    flex: 0 0 196px;
+    display: grid;
+    gap: 2px;
+    padding: 20px 14px 12px;
+    background: var(--paper);
+    transform: rotate(var(--tilt));
+    transform-origin: top center;
+  }
+  .stub-foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .stub-no {
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .stub-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 21px;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+  .clip {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 34px;
+    height: 14px;
+    margin-left: -17px;
+    background: var(--ink);
+    border-radius: 2px 2px 4px 4px;
+  }
+  .clip-lg {
+    width: 56px;
+    height: 18px;
+    margin-left: -28px;
+    top: -9px;
+    z-index: 1;
+  }
+
+  /* Hero */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: start;
+    padding-top: clamp(28px, 3.5vw, 48px);
+    padding-bottom: clamp(56px, 8vw, 104px);
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(50px, 6.4vw, 88px);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  h1 span {
+    display: block;
+    color: var(--orange);
+  }
+  .lede {
+    max-width: 40ch;
+    margin-top: 20px;
+    font-size: clamp(18px, 1.6vw, 21px);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 52px;
+    padding: 0 24px;
+    background: var(--orange);
+    color: var(--paper);
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+  .btn-primary:hover {
+    background: var(--orange-deep);
+  }
+  .actions :global(.gh) {
+    min-height: 52px;
+  }
+  .fineprint {
+    max-width: 44ch;
+    margin-top: 16px;
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+
+  /* The ticket */
+  .ticket {
+    position: relative;
+    justify-self: end;
+    width: min(100%, 440px);
+    margin-top: 8px;
+  }
+  .ticket-print {
+    padding: 28px 28px 24px;
+    background: var(--paper);
+    /* The newest ticket prints once on load */
+    animation: print 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes print {
+    from {
+      clip-path: inset(0 0 55% 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  .ticket-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .stamp {
+    display: inline-block;
+    padding: 4px 10px 2px;
+    border: 3px solid var(--orange);
+    color: var(--orange);
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 26px;
+    line-height: 1;
+    text-transform: uppercase;
+    transform: rotate(-3deg);
+  }
+  .ticket-no {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+  }
+  .ticket-in {
+    margin-top: 14px;
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .tear {
+    margin: 18px -28px;
+    border: 0;
+    border-top: 2px dashed var(--ink);
+  }
+  .ticket-title {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 34px;
+    line-height: 0.95;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .ticket-meta {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--orange);
+    white-space: pre-wrap;
+  }
+  .ticket-label {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid var(--ink);
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 20px;
+    text-transform: uppercase;
+  }
+  .ticket-label span {
+    font-variant-numeric: tabular-nums;
+  }
+  .ticket-ingredients {
+    list-style: none;
+    columns: 2;
+    column-gap: 20px;
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  .ticket-ingredients li {
+    break-inside: avoid;
+    padding: 2px 0 2px 20px;
+    position: relative;
+  }
+  .ticket-ingredients li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 11px;
+    height: 11px;
+    border: 2px solid var(--ink);
+  }
+  .ticket-steps {
+    list-style: none;
+    counter-reset: step;
+    margin-top: 10px;
+    display: grid;
+    gap: 8px;
+    font-size: 15px;
+  }
+  .ticket-steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 26px 1fr;
+  }
+  .ticket-steps li::before {
+    content: counter(step);
+    font-weight: 700;
+    color: var(--orange);
+    font-variant-numeric: tabular-nums;
+  }
+  .ticket-more {
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+  .ticket-caption {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-align: right;
+  }
+
+  /* Bands */
+  .band {
+    padding: clamp(64px, 9vw, 112px) 0;
+  }
+  .band-paper {
+    background: var(--paper);
+  }
+  .band-ink {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .section-title {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(40px, 5.6vw, 68px);
+    line-height: 0.95;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .section-lede {
+    max-width: 52ch;
+    margin-top: 14px;
+    font-size: 19px;
+  }
+
+  /* Stations */
+  .stations {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(24px, 4vw, 48px);
+    margin-top: 48px;
+  }
+  .stations li {
+    padding-top: 16px;
+    border-top: 4px solid var(--ink);
+  }
+  .stations h3 {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 32px;
+    text-transform: uppercase;
+  }
+  .station-no {
+    color: var(--orange);
+    font-size: 56px;
+    line-height: 0.8;
+    font-variant-numeric: tabular-nums;
+  }
+  .stations p {
+    margin-top: 12px;
+    max-width: 38ch;
+  }
+
+  /* Screens on the rail */
+  .shots {
+    list-style: none;
+    display: flex;
+    gap: 28px;
+    margin-top: 48px;
+    padding-top: 18px;
+    padding-bottom: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    border-top: 18px solid var(--steel-rail);
+    scrollbar-width: thin;
+  }
+  .shot {
+    position: relative;
+    flex: 0 0 min(85vw, 560px);
+    scroll-snap-align: start;
+  }
+  .shot .clip {
+    top: -30px;
+  }
+  .shot figure {
+    background: var(--paper);
+    padding: 10px 10px 14px;
+  }
+  .shot figcaption {
+    margin-top: 10px;
+    font-weight: 700;
+  }
+
+  /* Spec sheet */
+  .kitchen {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+  }
+  .spec {
+    border-top: 4px solid var(--ink);
+  }
+  .spec div {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.8fr) minmax(0, 1.2fr);
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--ink);
+  }
+  .spec dt {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 21px;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+
+  /* Install */
+  .install {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(32px, 6vw, 72px);
+    align-items: start;
+  }
+  .band-ink .section-title {
+    color: var(--paper);
+  }
+  .need-title {
+    margin-top: 28px;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 24px;
+    text-transform: uppercase;
+    color: #fb923c; /* orange-400: 7.6:1 on ink; brand orange is 3.3:1 here */
+  }
+  .need {
+    margin-top: 8px;
+    padding-left: 20px;
+    display: grid;
+    gap: 6px;
+  }
+  .code-ticket {
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .code-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 8px 8px 20px;
+    border-bottom: 2px dashed var(--ink);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 13px;
+  }
+  .copy {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    font: 700 14px var(--body);
+    cursor: pointer;
+  }
+  .copy:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  pre {
+    padding: 20px;
+    overflow-x: auto;
+    font-family: var(--code);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .code-step {
+    padding: 16px 20px;
+    border-top: 2px dashed var(--ink);
+    border-bottom: 2px dashed var(--ink);
+    font-size: 15px;
+  }
+  .code-step code {
+    font-family: var(--code);
+    font-size: 14px;
+  }
+  .code-after {
+    padding: 0 20px 20px;
+    font-size: 15px;
+  }
+  .code-after a {
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  /* FAQ */
+  .faq {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    gap: clamp(32px, 6vw, 80px);
+  }
+  details {
+    border-bottom: 1px solid var(--ink);
+  }
+  details:first-child {
+    border-top: 4px solid var(--ink);
+  }
+  summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+    min-height: 44px;
+    font-weight: 700;
+    font-size: 19px;
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .toggle {
+    position: relative;
+    flex: 0 0 18px;
+    height: 18px;
+    margin-top: 4px;
+  }
+  .toggle::before,
+  .toggle::after {
+    content: "";
+    position: absolute;
+    background: var(--orange);
+  }
+  .toggle::before {
+    left: 0;
+    right: 0;
+    top: 7.5px;
+    height: 3px;
+  }
+  .toggle::after {
+    top: 0;
+    bottom: 0;
+    left: 7.5px;
+    width: 3px;
+    transition: transform 0.2s ease;
+  }
+  details[open] .toggle::after {
+    transform: scaleY(0);
+  }
+  details p {
+    max-width: 60ch;
+    padding-bottom: 18px;
+  }
+
+  /* Footer */
+  .foot {
+    padding: 32px 0;
+    border-top: 18px solid var(--steel-rail);
+  }
+  .foot-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 15px;
+  }
+
+  @media (max-width: 860px) {
+    .hero,
+    .kitchen,
+    .install,
+    .faq {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .ticket {
+      justify-self: start;
+    }
+    .stations {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
