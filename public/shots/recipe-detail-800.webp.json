@@ -1,4 +1,4 @@
 {
-  "prompt": "Origin: not AI-generated. Crop of the real Sous Clip app screenshot reel-2-recipe/docs/screenshots/recipe.png, resized to 800px wide WebP with cwebp -q 82, served to phones where the full screenshot is unreadable.",
-  "createdAt": "2026-09-29T16:19:42.648Z"
+  "prompt": "Origin: not AI-generated. Real Sous Clip v2 app screenshot (recipe.png view): the app frontend, dark theme, rendered in headless Chrome against a mock API with stock food photos and the username chef; rendered at 390px wide at device scale 2 on a phone viewport, cropped to the detail region and resized to 800px wide, WebP at quality 82.",
+  "createdAt": "2026-11-09T17:39:50.000Z"
 }
